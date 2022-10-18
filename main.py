@@ -30,6 +30,19 @@ pick_starters = [
   "Honk honk "
 ]
 
+numbers = {
+  '0': 'zero',
+  '1': 'one',
+  '2': 'two',
+  '3': 'three',
+  '4': 'four',
+  '5': 'five',
+  '6': 'six',
+  '7': 'seven',
+  '8': 'eight',
+  '9': 'nine'
+}
+
 my_name = ["roselyn", "rwae"]
 
 client = discord.Client()
@@ -44,10 +57,6 @@ async def on_message(message):
     return
 
   msg = message.content.lower()
-
-  if msg.startswith('f!hello'):
-    await message.channel.send('funkyyy')
-    await message.channel.send('message two')
 
   # info
 
@@ -80,16 +89,17 @@ async def on_message(message):
     embedHelp.set_author(name='funkybot', icon_url='https://cdn.discordapp.com/emojis/856256948964687902.png')
     embedHelp.add_field(name='info funkybot', value='bot info', inline=True)
     embedHelp.add_field(name='you can do it (@user)', value='cheer! (opt. mention)', inline=True)
+    embedHelp.add_field(name='pick \_\_\_ or \_\_\_', value='make decisions', inline=True)
     embedHelp.add_field(name='pls bonk me', value='bonk yourself', inline=True)
     embedHelp.add_field(name='bonk @user', value='bonk someone', inline=True)
     embedHelp.add_field(name='whack @user', value='whack someone', inline=True)
     embedHelp.add_field(name='repeat ___', value='i will do as you wish', inline=True)
+    embedHelp.add_field(name='emojify ___', value='big text time', inline=True)
     embedHelp.add_field(name='diluc lenny', value='/lenny', inline=True)
     embedHelp.add_field(name='venti dance', value='uwu', inline=True)
     embedHelp.add_field(name='venti cat', value='nya', inline=True)
     embedHelp.add_field(name='ehe', value='ehe!', inline=True)
     embedHelp.add_field(name='mark pinch', value='italian hands', inline=True)
-    embedHelp.add_field(name='pick \_\_\_ or \_\_\_', value='make decisions', inline=True)
 
     await message.channel.send(embed=embedHelp)
 
@@ -109,15 +119,15 @@ async def on_message(message):
   if any(word in msg for word in birthday_keyword):
     await message.channel.send(random.choice(birthday_reply))
 
-  bday_kathia = datetime.date(2022, 1, 7) - datetime.date.today()
-  bday_chow = datetime.date(2022, 1, 16) - datetime.date.today()
-  bday_george = datetime.date(2022, 1, 27) - datetime.date.today()
-  bday_korie = datetime.date(2022, 2, 28) - datetime.date.today()
-  bday_cassidy = datetime.date(2022, 6, 20) - datetime.date.today()
-  bday_ligird = datetime.date(2022, 7, 15) - datetime.date.today()
-  bday_pepper = datetime.date(2021, 10, 13) - datetime.date.today()
-  bday_rwae = datetime.date(2021, 11, 5) - datetime.date.today()
-  bday_vika = datetime.date(2021, 11, 20) - datetime.date.today()
+  bday_kathia = datetime.date(2023, 1, 7) - datetime.date.today()
+  bday_chow = datetime.date(2023, 1, 16) - datetime.date.today()
+  bday_george = datetime.date(2023, 1, 27) - datetime.date.today()
+  bday_korie = datetime.date(2023, 2, 28) - datetime.date.today()
+  bday_cassidy = datetime.date(2023, 6, 20) - datetime.date.today()
+  bday_ligird = datetime.date(2023, 7, 15) - datetime.date.today()
+  bday_pepper = datetime.date(2023, 10, 13) - datetime.date.today()
+  bday_rwae = datetime.date(2022, 11, 5) - datetime.date.today()
+  bday_vika = datetime.date(2022, 11, 20) - datetime.date.today()
   
   if msg == "whnl birthdays":
     embedBirthday = discord.Embed(
@@ -143,7 +153,7 @@ async def on_message(message):
   # pick
 
   if msg.startswith('pick'):
-    if msg.count('or') == 1:
+    if msg.count(' or ') == 1:
       space = msg.find(' ')
       new_message = msg[(space + 1):]
       choice = new_message.split(' or ', 1)
@@ -165,13 +175,6 @@ async def on_message(message):
   if any(word in msg for word in my_name):
     await message.channel.send('<@!379827741194977280>')
 
-  if msg == '<@!759147695343665212>':
-    await message.channel.send('<@!759147695343665212>')
-    await message.channel.send('<@!759147695343665212>')
-    await message.channel.send('<@!759147695343665212>')
-    await message.channel.send('<@!759147695343665212>')
-    await message.channel.send('<@!759147695343665212>')
-
   # bonks and whacks
 
   if msg == 'pls bonk me':
@@ -188,6 +191,21 @@ async def on_message(message):
       await message.channel.send('{} **has been whacked.**'.format(user.mention))
       await message.channel.send('https://cdn.discordapp.com/attachments/535232819853656114/877771799805460480/unknown.png')
 
+  # emojify
+
+  if msg.startswith('emojify'):
+    emojify_array = []
+    space = msg.find(' ')
+    new_message = msg[(space + 1):]
+    for letter in new_message:
+      if letter.isalnum():
+        if letter.isdigit():
+          emojify_array.append(':' + numbers.get(letter) + ': ')
+        else:
+          emojify_array.append(':regional_indicator_' + letter + ': ')
+    emojify_string = ''
+    await message.channel.send(emojify_string.join(emojify_array))
+      
   # single replies
 
   if msg.startswith('ehe'):
@@ -217,10 +235,6 @@ async def on_message(message):
   if 'thicc' in msg:
     thicc_emoji = '<:thicc:600161101648363530>'
     await message.add_reaction(thicc_emoji)
-  
-  if 'kms' in msg:
-    kms_emoji = '<:kms:440259386842152991>'
-    await message.add_reaction(kms_emoji)
 
   if 'bread' in msg:
     bread_emoji = '🍞'
@@ -232,20 +246,20 @@ async def on_message(message):
 
   # bot activity status
 
-async def ch_pr():
- await client.wait_until_ready()
+  async def ch_pr():
+   await client.wait_until_ready()
 
- status_list = [
-   "Genshin Impact",
-   "The Holy Lyre der Himmel",
-   "in Angel's Share",
-   "the flute"
-   ]
+   status_list = [
+     "Genshin Impact",
+     "The Holy Lyre der Himmel",
+     "in Angel's Share",
+     "the flute"
+     ]
 
- while not client.is_closed():
-   status = random.choice(status_list)
-   await client.change_presence(activity=discord.Game(name=status))
-   await asyncio.sleep(25)
+   while not client.is_closed():
+     status = random.choice(status_list)
+     await client.change_presence(activity=discord.Game(name=status))
+     await asyncio.sleep(25)
 
 client.loop.create_task(ch_pr())
 
